@@ -13,7 +13,7 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return RedirectResponse(url="/application", status_code=status.HTTP_302_FOUND)
+    return RedirectResponse(url="/auth", status_code=status.HTTP_302_FOUND)
 
 
 app.include_router(authentication.router)

@@ -4,7 +4,7 @@ from typing import Optional
 from fastapi import APIRouter, HTTPException, Request, Response, status
 from jose import JWTError, jwt
 from pydantic import BaseModel
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, RedirectResponse
 
 from face_auth.business_val.user_val import LoginValidation, RegisterValidation
 from face_auth.constant.auth_constant import ALGORITHM, SECRET_KEY
@@ -110,14 +110,10 @@ def create_access_token(
 
 @router.post("/token")
 async def login_for_access_token(response: Response, login) -> dict:
-    """_summary_
-
-    Args:
-        response (Response): _description_
-        login (_type_): _description_
+    """Set the access token
 
     Returns:
-        dict: _description_
+        dict: response
     """
 
     try:
@@ -141,16 +137,10 @@ async def login_for_access_token(response: Response, login) -> dict:
 
 @router.get("/", response_class=JSONResponse)
 async def authentication_page(request: Request):
-    """_summary_
-
-    Args:
-        request (Request): _description_
-
-    Raises:
-        e: _description_
+    """Login GET route
 
     Returns:
-        _type_: _description_
+        _type_: JSONResponse
     """
     try:
         return JSONResponse(
@@ -164,12 +154,8 @@ async def authentication_page(request: Request):
 async def login(request: Request, login: Login):
     """Route for User Login
 
-    Args:
-        request (Request): _description_
-        login (Login): _description_
-
     Returns:
-        _type_: _description_
+        _type_: Login Response
     """
     try:
         # response = RedirectResponse(url="/application/", status_code=status.HTTP_302_FOUND)
@@ -209,16 +195,10 @@ async def login(request: Request, login: Login):
 
 @router.get("/register", response_class=JSONResponse)
 async def authentication_page(request: Request):
-    """_summary_
-
-    Args:
-        request (Request): _description_
-
-    Raises:
-        e: _description_
+    """Route for User Registration
 
     Returns:
-        _type_: _description_
+        _type_: Register Response
     """
     try:
         return JSONResponse(
@@ -288,20 +268,14 @@ async def register_user(request: Request, register: Register):
 
 @router.get("/logout")
 async def logout(request: Request):
-    """_summary_
-
-    Args:
-        request (Request): _description_
-
-    Raises:
-        e: _description_
+    """Route for User Logout
 
     Returns:
-        _type_: _description_
+        _type_: Logout Response
     """
     try:
         msg = "You have been logged out"
-        # response =  RedirectResponse(url="/auth/", status_code=status.HTTP_302_FOUND, headers={"msg": msg})
+        response =  RedirectResponse(url="/auth/", status_code=status.HTTP_302_FOUND, headers={"msg": msg})
         response.delete_cookie(key="access_token")
         response = JSONResponse(
             status_code=status.HTTP_200_OK, content={"status": True, "message": msg}
