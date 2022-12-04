@@ -22,7 +22,7 @@ conda create -p ./env python=3.8.13 -y
 
 ### Step 3-: Activate Conda environment
 ```
-conda activate face_auth
+conda activate ./env
 ```
 
 ### Step 4-: Install requirements
