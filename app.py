@@ -4,7 +4,6 @@ from starlette import status
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.responses import RedirectResponse
 
-
 from controller.app_controller import application
 from controller.auth_controller import authentication
 from face_auth.constant.application import APP_HOST, APP_PORT
